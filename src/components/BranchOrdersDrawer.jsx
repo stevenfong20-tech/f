@@ -10,13 +10,13 @@ import { toast } from 'sonner';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-blue-100 text-blue-800',
-  processing: 'bg-purple-100 text-purple-800',
-  delivered: 'bg-green-100 text-green-800',
+  preparing: 'bg-orange-100 text-orange-800',
+  ready_for_pickup: 'bg-blue-100 text-blue-800',
+  completed: 'bg-green-100 text-green-800',
   cancelled: 'bg-red-100 text-red-800',
 };
 
-const STATUS_OPTIONS = ['pending', 'confirmed', 'processing', 'delivered', 'cancelled'];
+const STATUS_OPTIONS = ['pending', 'preparing', 'ready_for_pickup', 'completed', 'cancelled'];
 
 export default function BranchOrdersDrawer({ branch, orders, onClose }) {
   const { t, language } = useLanguage();
@@ -54,7 +54,7 @@ export default function BranchOrdersDrawer({ branch, orders, onClose }) {
   });
 
   const statusLabel = (s) => {
-    const map = { pending: t('pending'), confirmed: t('confirmed'), processing: t('processing'), delivered: t('delivered'), cancelled: t('cancelled') };
+    const map = { pending: t('pending'), preparing: t('preparing'), ready_for_pickup: t('ready_for_pickup'), completed: t('completed'), cancelled: t('cancelled') };
     return map[s] || s;
   };
 
