@@ -14,17 +14,15 @@
       "type": "string",
       "enum": [
         "pending",
-        "confirmed",
-        "processing",
-        "delivered",
+        "preparing",
+        "ready_for_pickup",
+        "completed",
         "cancelled"
       ],
-      "default": "pending",
-      "description": "Order status"
+      "default": "pending"
     },
     "items": {
       "type": "array",
-      "description": "List of ordered items",
       "items": {
         "type": "object",
         "properties": {
@@ -56,17 +54,33 @@
       }
     },
     "total_amount": {
-      "type": "number",
-      "description": "Total order amount in NTD"
+      "type": "number"
     },
     "notes": {
+      "type": "string"
+    },
+    "special_instructions": {
       "type": "string",
-      "description": "Order notes"
+      "description": "Special instructions like extra spicy, no garlic, etc."
     },
     "order_date": {
       "type": "string",
-      "format": "date",
-      "description": "Date the order was placed"
+      "format": "date"
+    },
+    "status_history": {
+      "type": "array",
+      "description": "Timeline of status changes",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "required": [
