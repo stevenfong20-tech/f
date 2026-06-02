@@ -1,0 +1,60 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name_zh": {
+      "type": "string",
+      "description": "Product name in Traditional Chinese"
+    },
+    "name_en": {
+      "type": "string",
+      "description": "Product name in English"
+    },
+    "category_zh": {
+      "type": "string",
+      "description": "Category in Chinese"
+    },
+    "category_en": {
+      "type": "string",
+      "description": "Category in English"
+    },
+    "unit_price": {
+      "type": "number",
+      "description": "Price per unit in NTD"
+    },
+    "unit_zh": {
+      "type": "string",
+      "description": "Unit of measure in Chinese (e.g. \u7bb1, \u74f6)"
+    },
+    "unit_en": {
+      "type": "string",
+      "description": "Unit of measure in English (e.g. box, bottle)"
+    },
+    "description_zh": {
+      "type": "string",
+      "description": "Product description in Chinese"
+    },
+    "description_en": {
+      "type": "string",
+      "description": "Product description in English"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether product is available for ordering"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Product image URL"
+    },
+    "min_order_qty": {
+      "type": "number",
+      "default": 1,
+      "description": "Minimum order quantity"
+    }
+  },
+  "required": [
+    "name_zh",
+    "unit_price"
+  ]
+}
