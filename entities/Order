@@ -1,0 +1,77 @@
+{
+  "name": "Order",
+  "type": "object",
+  "properties": {
+    "branch_id": {
+      "type": "string",
+      "description": "ID of the branch that placed the order"
+    },
+    "branch_name": {
+      "type": "string",
+      "description": "Name of the branch"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "processing",
+        "delivered",
+        "cancelled"
+      ],
+      "default": "pending",
+      "description": "Order status"
+    },
+    "items": {
+      "type": "array",
+      "description": "List of ordered items",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name_zh": {
+            "type": "string"
+          },
+          "product_name_en": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "unit_zh": {
+            "type": "string"
+          },
+          "unit_en": {
+            "type": "string"
+          },
+          "subtotal": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "total_amount": {
+      "type": "number",
+      "description": "Total order amount in NTD"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Order notes"
+    },
+    "order_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the order was placed"
+    }
+  },
+  "required": [
+    "branch_id",
+    "branch_name",
+    "total_amount"
+  ]
+}
