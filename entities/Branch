@@ -1,0 +1,50 @@
+{
+  "name": "Branch",
+  "type": "object",
+  "properties": {
+    "name_zh": {
+      "type": "string",
+      "description": "Branch name in Traditional Chinese"
+    },
+    "name_en": {
+      "type": "string",
+      "description": "Branch name in English"
+    },
+    "address": {
+      "type": "string",
+      "description": "Branch address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Branch phone number"
+    },
+    "manager_name": {
+      "type": "string",
+      "description": "Branch manager name"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "user_id": {
+      "type": "string",
+      "description": "Associated user account ID"
+    },
+    "invited_email": {
+      "type": "string",
+      "description": "Email address of the invited branch user (pending)"
+    },
+    "invite_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted"
+      ],
+      "default": "pending",
+      "description": "Invitation status"
+    }
+  },
+  "required": [
+    "name_zh"
+  ]
+}
