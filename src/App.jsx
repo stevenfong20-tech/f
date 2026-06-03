@@ -30,10 +30,16 @@ const AuthenticatedApp = () => {
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
+      if (authError) {
+    if (authError.type === 'user_not_registered') {
+      return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      navigateToLogin();
+      // Outsmart the bouncer: redirect to your Vercel app's login path
+      window.location.href = "/login";
       return null;
     }
+  }
+  
   }
 
   const isSupplier = user?.role === 'admin';
