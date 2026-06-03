@@ -117,10 +117,7 @@ export const AuthProvider = ({ children }) => {
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    base44.auth.logout();
-    setRedirectToLogin(true);
+    base44.auth.logout('/login');
   };
 
   const navigateToLogin = () => {
