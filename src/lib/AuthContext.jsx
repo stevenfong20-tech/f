@@ -114,24 +114,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-      const logout = () => {
-    // 1. Instantly wipe out the app's internal memory of the user
+  const logout = (shouldRedirect = true) => {
     setUser(null);
     setIsAuthenticated(false);
-    
-    // 2. Completely destroy all stored tokens, sessions, and cookies in the browser
-    localStorage.clear();
-    sessionStorage.clear();
-    
-    // 3. Clear any cookies that might be holding a login token
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-
-    // 4. Force the browser to jump back to your Vercel homepage before anything else can stop it
-    window.location.replace(window.location.origin);
+    base44.auth.logout();
+    window.location.href = '/login';
   };
 
   const navigateToLogin = () => {
