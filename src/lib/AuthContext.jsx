@@ -114,15 +114,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-    const logout = () => {
+      const logout = () => {
+    // 1. Instantly wipe out the app's internal memory of the user
     setUser(null);
     setIsAuthenticated(false);
     
-    // Tell Base44 to log out but STOP it from redirecting automatically
-    base44.auth.logout(false);
+    // 2. Completely destroy all stored tokens, sessions, and cookies in the browser
+    localStorage.clear();
+    sessionStorage.clear();
     
-    // Manually send the user back to your own website's home page
-    window.location.href = window.location.origin;
+    // 3. Clear any cookies that might be holding a login token
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // 4. Force the browser to jump back to your Vercel homepage before anything else can stop it
+    window.location.replace(window.location.origin);
   };
 
   const navigateToLogin = () => {
