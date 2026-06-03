@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import Login from '@/pages/Login';
@@ -23,8 +23,8 @@ const AUTH_PATHS = ['/login', '/forgot-password', '/reset-password'];
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, user, redirectToLogin, setRedirectToLogin } = useAuth();
-  const currentPath = window.location.pathname;
-  const isOnAuthPage = AUTH_PATHS.some(p => currentPath.startsWith(p));
+  const location = useLocation();
+  const isOnAuthPage = AUTH_PATHS.some(p => location.pathname.startsWith(p));
 
   if (redirectToLogin) {
     setRedirectToLogin(false);
@@ -45,6 +45,11 @@ const AuthenticatedApp = () => {
     } else if (authError.type === 'auth_required') {
       return <Navigate to="/login" replace />;
     }
+  }
+
+  // Not authenticated and not on an auth page → go to login
+  if (!user && !isOnAuthPage) {
+    return <Navigate to="/login" replace />;
   }
 
   const isSupplier = user?.role === 'admin';
