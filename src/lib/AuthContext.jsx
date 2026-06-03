@@ -114,15 +114,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = (shouldRedirect = true) => {
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+
+  const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
     base44.auth.logout();
-    window.location.href = '/login';
+    setRedirectToLogin(true);
   };
 
   const navigateToLogin = () => {
-    window.location.href = '/login';
+    setRedirectToLogin(true);
   };
 
   return (
@@ -134,6 +136,8 @@ export const AuthProvider = ({ children }) => {
       authError,
       appPublicSettings,
       authChecked,
+      redirectToLogin,
+      setRedirectToLogin,
       logout,
       navigateToLogin,
       checkUserAuth,
