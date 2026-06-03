@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import Login from '@/pages/Login';
+import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -19,7 +20,7 @@ import MyOrdersPage from '@/pages/MyOrdersPage';
 import SettingsPage from '@/pages/SettingsPage';
 import { Toaster as Sonner } from 'sonner';
 
-const AUTH_PATHS = ['/login', '/forgot-password', '/reset-password'];
+const AUTH_PATHS = ['/login', '/register', '/forgot-password', '/reset-password'];
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, user, redirectToLogin, setRedirectToLogin } = useAuth();
@@ -57,6 +58,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route element={<Layout />}>
