@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import Login from '@/pages/Login';
@@ -20,7 +20,12 @@ import SettingsPage from '@/pages/SettingsPage';
 import { Toaster as Sonner } from 'sonner';
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, user } = useAuth();
+  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, user, redirectToLogin, setRedirectToLogin } = useAuth();
+
+  if (redirectToLogin) {
+    setRedirectToLogin(false);
+    return <Navigate to="/login" replace />;
+  }
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
