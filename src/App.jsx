@@ -19,8 +19,12 @@ import MyOrdersPage from '@/pages/MyOrdersPage';
 import SettingsPage from '@/pages/SettingsPage';
 import { Toaster as Sonner } from 'sonner';
 
+const AUTH_PATHS = ['/login', '/forgot-password', '/reset-password'];
+
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, user, redirectToLogin, setRedirectToLogin } = useAuth();
+  const { isLoadingAuth, isLoadingPublicSettings, authError, user, redirectToLogin, setRedirectToLogin } = useAuth();
+  const currentPath = window.location.pathname;
+  const isOnAuthPage = AUTH_PATHS.some(p => currentPath.startsWith(p));
 
   if (redirectToLogin) {
     setRedirectToLogin(false);
@@ -35,12 +39,11 @@ const AuthenticatedApp = () => {
     );
   }
 
-  if (authError) {
+  if (authError && !isOnAuthPage) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
+      return <Navigate to="/login" replace />;
     }
   }
 
