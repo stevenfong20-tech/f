@@ -18,7 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const { user, logout } = useAuth();
   const { t } = useLanguage();
   const location = useLocation();
@@ -51,7 +51,7 @@ export default function Layout() {
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-30 w-64 bg-sidebar transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col",
+        "fixed inset-y-0 left-0 z-30 w-64 bg-sidebar transform transition-transform duration-300 ease-in-out lg:relative flex flex-col",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Logo */}
@@ -62,7 +62,7 @@ export default function Layout() {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden text-sidebar-foreground hover:bg-sidebar-accent"
+            className="text-sidebar-foreground hover:bg-sidebar-accent"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="h-5 w-5" />
@@ -121,7 +121,6 @@ export default function Layout() {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-5 w-5" />
