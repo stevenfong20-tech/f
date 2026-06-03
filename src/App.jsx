@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import Layout from '@/components/Layout';
-import SupplierDashboard from '@/pages/SupplierDashboard.jsx';
+import SupplierDashboard from '@/pages/SupplierDashboard';
 import OrdersPage from '@/pages/OrdersPage';
 import ProductsPage from '@/pages/ProductsPage';
 import BranchesPage from '@/pages/BranchesPage';
