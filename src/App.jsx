@@ -27,10 +27,7 @@ const AuthenticatedApp = () => {
     );
   }
 
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-      if (authError) {
+   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
@@ -38,8 +35,6 @@ const AuthenticatedApp = () => {
       window.location.href = "/login";
       return null;
     }
-  }
-  
   }
 
   const isSupplier = user?.role === 'admin';
