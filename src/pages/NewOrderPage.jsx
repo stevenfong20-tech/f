@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
@@ -36,7 +36,20 @@ export default function NewOrderPage() {
     queryFn: () => base44.entities.Order.list('-created_date', 100),
   });
 
-  const myBranch = branches.find(b => b.user_id === user?.id);
+  // Find branch by user_id first, then fall back to invited_email match
+  const myBranch = branches.find(b => b.user_id === user?.id) ||
+    branches.find(b => !b.user_id && b.invited_email && b.invited_email.toLowerCase() === user?.email?.toLowerCase());
+
+  // Auto-link: if found by email but user_id not set yet, update the branch
+  useEffect(() => {
+    if (!user || !myBranch) return;
+    if (!myBranch.user_id && myBranch.invited_email) {
+      base44.entities.Branch.update(myBranch.id, {
+        user_id: user.id,
+        invite_status: 'accepted',
+      }).then(() => queryClient.invalidateQueries({ queryKey: ['branches'] }));
+    }
+  }, [myBranch?.id, user?.id]);
 
   const activeProducts = products.filter(p => p.is_active !== false);
 
