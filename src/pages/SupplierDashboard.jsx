@@ -3,9 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/LanguageContext';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ShoppingCart, Store, Clock, ArrowRight } from 'lucide-react';
+import { TrendingUp, ShoppingCart, Store, Clock, ArrowRight, UserPlus, Mail, Loader2, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import DailyBranchReport from '@/components/DailyBranchReport';
 
@@ -19,6 +22,21 @@ const statusColors = {
 
 export default function SupplierDashboard() {
   const { t, language } = useLanguage();
+
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState('user');
+  const [inviteLoading, setInviteLoading] = useState(false);
+  const [inviteStatus, setInviteStatus] = useState(null);
+
+  const handleInvite = async (e) => {
+    e.preventDefault();
+    setInviteStatus(null);
+    setInviteLoading(true);
+    await base44.users.inviteUser(inviteEmail, inviteRole);
+    setInviteStatus({ type: 'success', message: `Invitation sent to ${inviteEmail}` });
+    setInviteEmail('');
+    setInviteLoading(false);
+  };
 
   const { data: orders = [] } = useQuery({
     queryKey: ['orders'],
@@ -69,6 +87,56 @@ export default function SupplierDashboard() {
       </div>
 
       <DailyBranchReport orders={orders} branches={branches} />
+
+      {/* Invite User */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <UserPlus size={16} />
+            {language === 'zh' ? '邀請新用戶' : 'Invite New User'}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleInvite} className="flex flex-col sm:flex-row gap-3 items-end">
+            <div className="flex-1 space-y-1.5">
+              <Label htmlFor="inv-email">{language === 'zh' ? '電子郵件' : 'Email'}</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="inv-email"
+                  type="email"
+                  placeholder="manager@example.com"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="inv-role">{language === 'zh' ? '角色' : 'Role'}</Label>
+              <select
+                id="inv-role"
+                value={inviteRole}
+                onChange={(e) => setInviteRole(e.target.value)}
+                className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              >
+                <option value="user">{language === 'zh' ? '分店管理員 (User)' : 'Branch Manager (User)'}</option>
+                <option value="admin">{language === 'zh' ? '供應商管理員 (Admin)' : 'Supplier Admin'}</option>
+              </select>
+            </div>
+            <Button type="submit" disabled={inviteLoading} className="shrink-0">
+              {inviteLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><UserPlus className="w-4 h-4 mr-1" />{language === 'zh' ? '發送邀請' : 'Send Invite'}</>}
+            </Button>
+          </form>
+          {inviteStatus && (
+            <div className={`mt-3 p-3 rounded-lg text-sm flex items-center gap-2 ${inviteStatus.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-destructive/10 text-destructive'}`}>
+              {inviteStatus.type === 'success' && <Check size={14} />}
+              {inviteStatus.message}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Orders */}
